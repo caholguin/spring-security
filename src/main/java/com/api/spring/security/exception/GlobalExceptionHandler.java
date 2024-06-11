@@ -4,6 +4,7 @@ import com.api.spring.security.dto.ApiErrorDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,9 +25,24 @@ public class GlobalExceptionHandler {
         apiError.setBackendMessage(exception.getLocalizedMessage());
         apiError.setUrl(request.getRequestURL().toString());
         apiError.setMethod(request.getMethod());
+        apiError.setTimestamp(LocalDateTime.now());
         apiError.setMessage("Error interno del servidor vuelva a intertanlo");
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handlerAccessDeniedException(HttpServletRequest request, AccessDeniedException exception) {
+
+        ApiErrorDto apiError = new ApiErrorDto();
+        apiError.setBackendMessage(exception.getLocalizedMessage());
+        apiError.setUrl(request.getRequestURL().toString());
+        apiError.setMethod(request.getMethod());
+        apiError.setTimestamp(LocalDateTime.now());
+        apiError.setMessage("Acceso denegado. No tienes los permisos necesarios para acceder a este recurso.");
+
+        return new ResponseEntity<>(apiError,HttpStatus.FORBIDDEN);
+        //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -48,6 +64,7 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
         apiError.setValidationErrors(validationErrors);
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+        return new ResponseEntity<>(apiError,HttpStatus.INTERNAL_SERVER_ERROR);
+        //return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 }

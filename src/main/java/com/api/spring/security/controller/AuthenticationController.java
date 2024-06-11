@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class AuthenticationController {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @PreAuthorize("permitAll")
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponseDTO> authenticate(@RequestBody @Valid AutenticationRequestDTO autenticationRequestDTO){
 
@@ -26,6 +28,7 @@ public class AuthenticationController {
 
     }
 
+    @PreAuthorize("permitAll")
     @GetMapping("/validate-token")
     public ResponseEntity<Boolean> validate(@RequestParam String jwt){
 
@@ -33,6 +36,7 @@ public class AuthenticationController {
         return new ResponseEntity<>(isTokenValid, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAuthority('READ_MY_PROFILE')")
     @GetMapping("/profile")
     public ResponseEntity<User> profile(){
         User user = authenticationService.findLoggedInUser();
