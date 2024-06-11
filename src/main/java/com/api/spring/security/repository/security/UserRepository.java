@@ -1,6 +1,6 @@
-package com.api.spring.security.repository;
+package com.api.spring.security.repository.security;
 
-import com.api.spring.security.model.User;
+import com.api.spring.security.model.security.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -1,6 +1,5 @@
-package com.api.spring.security.model;
+package com.api.spring.security.model.security;
 
-import com.api.spring.security.util.Role;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,9 +24,9 @@ public class User implements UserDetails {
 
     private String password;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name= "role_id")
     private Role role;
-
 
 
     @Override
@@ -35,10 +34,10 @@ public class User implements UserDetails {
 
         if (role == null) return null;
 
-        if (role.getPermisions() == null) return null;
+        if (role.getPermissions() == null) return null;
 
-        List<SimpleGrantedAuthority> authorities = role.getPermisions().stream()
-                .map(each -> each.name())
+        List<SimpleGrantedAuthority> authorities = role.getPermissions().stream()
+                .map(each -> each.getOperation().getName())
                 .map(each -> new SimpleGrantedAuthority(each))
               /*  .map(each -> {
                     String permission = each.name();
@@ -46,7 +45,7 @@ public class User implements UserDetails {
                 })*/
                 .collect(Collectors.toList());
 
-                authorities.add(new SimpleGrantedAuthority("ROLE_"+this.role.name()));
+                authorities.add(new SimpleGrantedAuthority("ROLE_"+this.role.getName()));
                 return authorities;
     }
 

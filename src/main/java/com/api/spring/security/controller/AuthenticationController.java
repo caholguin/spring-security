@@ -2,7 +2,7 @@ package com.api.spring.security.controller;
 
 import com.api.spring.security.dto.auth.AutenticationRequestDTO;
 import com.api.spring.security.dto.auth.AuthenticationResponseDTO;
-import com.api.spring.security.model.User;
+import com.api.spring.security.model.security.User;
 import com.api.spring.security.service.auth.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

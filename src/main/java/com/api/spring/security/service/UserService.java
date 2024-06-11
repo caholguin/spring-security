@@ -1,7 +1,7 @@
 package com.api.spring.security.service;
 
 import com.api.spring.security.dto.SaveUserDTO;
-import com.api.spring.security.model.User;
+import com.api.spring.security.model.security.User;
 
 import java.util.Optional;
 

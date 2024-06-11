@@ -2,7 +2,7 @@ package com.api.spring.security.controller;
 
 import com.api.spring.security.dto.RegisteredUserDTO;
 import com.api.spring.security.dto.SaveUserDTO;
-import com.api.spring.security.model.User;
+import com.api.spring.security.model.security.User;
 import com.api.spring.security.service.auth.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

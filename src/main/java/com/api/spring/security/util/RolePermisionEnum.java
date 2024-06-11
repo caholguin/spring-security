@@ -1,6 +1,6 @@
 package com.api.spring.security.util;
 
-public enum RolePermision {
+public enum RolePermisionEnum {
     READ_ALL_PRODUCTS,
     READ_ONE_PRODUCT,
     CREATE_ONE_PRODUCT,

@@ -1,7 +1,7 @@
 package com.api.spring.security.config.security.filter;
 
 import com.api.spring.security.exception.ObjectNotFoundException;
-import com.api.spring.security.model.User;
+import com.api.spring.security.model.security.User;
 import com.api.spring.security.service.UserService;
 import com.api.spring.security.service.auth.JwtService;
 import jakarta.servlet.FilterChain;
@@ -11,8 +11,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
