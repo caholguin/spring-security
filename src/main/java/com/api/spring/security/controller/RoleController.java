@@ -36,8 +36,8 @@ public class RoleController {
 
     @PostMapping
     public ResponseEntity<RoleDTO> create(@RequestBody RoleDTO roleDto) {
-        RoleDTO createMedico = roleService.save(roleDto);
-        return new ResponseEntity<>(createMedico,HttpStatus.CREATED);
+        RoleDTO role = roleService.save(roleDto);
+        return new ResponseEntity<>(role,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
