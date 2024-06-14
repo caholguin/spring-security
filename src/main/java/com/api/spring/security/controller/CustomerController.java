@@ -21,7 +21,7 @@ public class CustomerController {
     @Autowired
     private AuthenticationService authenticationService;
 
-    @PreAuthorize("permitAll")
+
     @PostMapping
     public ResponseEntity<RegisteredUserDTO> register(@RequestBody @Valid SaveUserDTO saveUser){
         RegisteredUserDTO registerUser = authenticationService.registerCustomer(saveUser);
