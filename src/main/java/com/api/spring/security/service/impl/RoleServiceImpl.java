@@ -116,7 +116,20 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.toDTO(role);
     }
 
+    @Override
+    public void delete(Long id){
+        Optional<Role> role = roleRepository.findById(id);
 
+        if (role.isPresent()){
+            /*Paciente paciente = optionalPaciente.get();
+
+            for (Cita cita :paciente.getCitas()){
+                citaService.deleteCita(cita.getId());
+            }*/
+
+            roleRepository.deleteById(id);
+        }
+    }
 
 
 }

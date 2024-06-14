@@ -17,7 +17,7 @@ public class Role {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "role", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<GrantedPermission> permissions = new ArrayList<>();;
 
     public Role(){
