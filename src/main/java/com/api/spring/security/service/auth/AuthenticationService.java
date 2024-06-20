@@ -4,6 +4,7 @@ import com.api.spring.security.dto.RegisteredUserDTO;
 import com.api.spring.security.dto.SaveUserDTO;
 import com.api.spring.security.dto.auth.AutenticationRequestDTO;
 import com.api.spring.security.dto.auth.AuthenticationResponseDTO;
+import com.api.spring.security.dto.auth.RefreshTokenDTO;
 import com.api.spring.security.exception.ObjectNotFoundException;
 import com.api.spring.security.model.security.JwtToken;
 import com.api.spring.security.model.security.User;
@@ -97,7 +98,6 @@ public class AuthenticationService {
     }
 
     public boolean validateToken(String jwt){
-
         try {
             jwtService.extractUsername(jwt);
             return true;
@@ -105,7 +105,6 @@ public class AuthenticationService {
             System.out.println(exception.getMessage());
             return false;
         }
-
     }
 
     public User findLoggedInUser(){
@@ -136,4 +135,34 @@ public class AuthenticationService {
         }
 
     }
+
+    public AuthenticationResponseDTO refresToken(String jwt){
+
+       Optional<JwtToken> token = jwtRepository.findByToken(jwt);
+
+        if (token.isPresent() && token.get().isValid()) {
+
+            String username = jwtService.extractUsername(jwt);
+
+            User user = userService.findByUsername(username).orElseThrow(() -> new ObjectNotFoundException("User not found. Username: " + username));
+
+            String newjwt = jwtService.generateToken(user, generateExtraClaims(user));
+
+            saveUserToken(user,newjwt);
+
+            token.get().setValid(false);
+            jwtRepository.save(token.get());
+
+            AuthenticationResponseDTO authenticationResponseDTO = new AuthenticationResponseDTO();
+
+            authenticationResponseDTO.setJwt(newjwt);
+
+            return authenticationResponseDTO;
+        }
+
+        throw new ObjectNotFoundException("El token proporcionado no pertenece a un usuario o es invalido");
+
+    }
+
+
 }

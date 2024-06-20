@@ -3,6 +3,7 @@ package com.api.spring.security.controller;
 import com.api.spring.security.dto.LogoutResponseDTO;
 import com.api.spring.security.dto.auth.AutenticationRequestDTO;
 import com.api.spring.security.dto.auth.AuthenticationResponseDTO;
+import com.api.spring.security.dto.auth.RefreshTokenDTO;
 import com.api.spring.security.model.security.User;
 import com.api.spring.security.service.auth.AuthenticationService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,9 +34,15 @@ public class AuthenticationController {
     @PreAuthorize("permitAll")
     @GetMapping("/validate-token")
     public ResponseEntity<Boolean> validate(@RequestParam String jwt){
-
         boolean isTokenValid = authenticationService.validateToken(jwt);
         return new ResponseEntity<>(isTokenValid, HttpStatus.OK);
+    }
+
+    @PostMapping("/refreshToken")
+    public ResponseEntity<AuthenticationResponseDTO> refreshToken(@RequestBody RefreshTokenDTO refreshTokenDTO){
+        System.out.println("jwt = " + refreshTokenDTO);
+        AuthenticationResponseDTO res = authenticationService.refresToken(refreshTokenDTO.getToken());
+        return new ResponseEntity<>(res,HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('READ_MY_PROFILE')")
@@ -47,10 +54,8 @@ public class AuthenticationController {
 
     @PostMapping("/logout")
     public ResponseEntity<LogoutResponseDTO> logout(HttpServletRequest request){
-
         authenticationService.logout(request);
         return new ResponseEntity<>(new LogoutResponseDTO("logout exitoso"),HttpStatus.OK);
-
     }
 
 }
